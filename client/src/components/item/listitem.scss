@@ -5,6 +5,7 @@
   margin-right: 5px;
   overflow: hidden;
   cursor: pointer;
+  color: white;
   img {
     height: 100%;
     width: 100%;
@@ -12,6 +13,14 @@
   }
   &:hover {
     width: 355px;
-    height: 230px;
+    height: 330px;
+    position: absolute;
+    top: -150px;
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.07);
+    box-shadow: 0px 0px 15px 0px rgba(255, 255, 255, 0.07);
+
+    img {
+      height: 170px;
+    }
   }
 }
