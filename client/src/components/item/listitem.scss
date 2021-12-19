@@ -1,0 +1,17 @@
+.listItem {
+  width: 255px;
+  height: 150px;
+  background-color: var(--main-color);
+  margin-right: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  &:hover {
+    width: 355px;
+    height: 230px;
+  }
+}
