@@ -1,3 +1,20 @@
 :root {
   --main-color: #0b0b0b;
+  --text-color-light: hsl(var(--hue-color), 8%, 65%);
+  --hue-color: 250;
+  --scroll-bar-color: hsl(var(--hue-color), 12%, 40%);
+  --scroll-thumb-color: hsl(var(--hue-color), 12%, 36%);
+}
+
+::-webkit-scrollbar {
+  width: 0.8rem;
+  background-color: var(--scroll-bar-color);
+  border-radius: 0.5rem;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb-color);
+  border-radius: 0.5rem;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-color-light);
 }
