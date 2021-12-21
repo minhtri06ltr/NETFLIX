@@ -44,7 +44,7 @@ const ListItem = ({ index }) => {
               autem repellendus. Officia. Lorem ipsum dolor sit amet
               consectetur, adipisicing elit. Aspernatur, reiciendis.
             </div>
-            <div className="genra">Action</div>
+            <div className="genre">Action</div>
           </div>
         </>
       )}
