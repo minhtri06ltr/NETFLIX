@@ -11,5 +11,5 @@ router.get("/find/:id",getUser)
 //GET ALL
 router.get("/",verifyToken,getAllUser)
 //GET USER STATS
-router.get("/",verifyToken,getUserPerMonth)
+router.get("/stats",verifyToken,getUserPerMonth)
 module.exports = router;
