@@ -51,14 +51,14 @@ exports.deleteList = async (req, res) => {
 //GET LIST 
 exports.getList = async (req, res) => {
     const typeQuery = req.query.type
-    const genraQuery = req.query.genra
+    const genreQuery = req.query.genre
     let list = []
     try {
         if (typeQuery) {
-            if (genraQuery) {
+            if (genreQuery) {
                 list = await List.aggregate([
                     { $sample: { size: 10 } },
-                    {$match:{type:typeQuery,genra:genraQuery}}
+                    {$match:{type:typeQuery,genre:genreQuery}}
                 ])
             } else {
                 list = await List.aggregate([

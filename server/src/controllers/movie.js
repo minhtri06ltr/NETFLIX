@@ -87,6 +87,7 @@ exports.deleteMovie = async (req, res) => {
 };
 //GET MOVIE
 exports.getMovie = async (req, res) => {
+  console.log(req.params.id)
   try {
     const movie = await Movie.findById(req.params.id);
     return res.status(200).json({

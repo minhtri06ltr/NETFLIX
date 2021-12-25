@@ -2,12 +2,11 @@ import { InfoOutlined, PlayArrow } from "@material-ui/icons";
 import "./featured.scss";
 
 const Featured = ({ type }) => {
-  console.log(type);
   return (
     <div className="featured">
       {type && (
         <div className="category">
-          <span>{type === "movie" ? "Movies" : "Series"}</span>
+          <span>{type === "movies" ? "Movies" : "Series"}</span>
           <select name="genre" id="genre">
             <option>Genre</option>
             <option value="adventure">Adventure</option>

@@ -1,6 +1,7 @@
 import "./topbar.scss";
 import { ArrowDropDown, Notifications, Search } from "@material-ui/icons";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 const Topbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -19,9 +20,15 @@ const Topbar = () => {
             alt=""
             className=""
           />
-          <span className="">Homepage</span>
-          <span className="">Series</span>
-          <span className="">Movies</span>
+          <Link to="/" className="link">
+            <span>Homepage</span>
+          </Link>
+          <Link to="/series" className="link">
+            <span>Series</span>
+          </Link>
+          <Link to="/movies" className="link">
+            <span>Movies</span>
+          </Link>
           <span className="">New and Popular</span>
           <span className="">My List</span>
         </div>
