@@ -21,7 +21,7 @@ const App = () => {
 
         <Route path="/" element={<ProtectedRoute />}>
           <Route path="/" element={<Home />} />
-          <Route path="/movies" element={<Home type="movies" />} />
+          <Route path="/movies" element={<Home type="movie" />} />
           <Route path="/series" element={<Home type="series" />} />
           <Route path="/watch" element={<Watch />} />
           <Route path="/login" element={<Login />} />

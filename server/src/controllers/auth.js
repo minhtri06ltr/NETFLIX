@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const argon2 = require("argon2");
+const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 exports.register = async (req, res) => {
   const userDB = await User.findOne({
@@ -19,11 +19,14 @@ exports.register = async (req, res) => {
       message: "Email already taken",
     });
 
-  const hashedPassword = await argon2.hash(req.body.password); //use package argon2 to hash the password
+  
   const newUser = new User({
     username: req.body.username,
     email: req.body.email,
-    password: hashedPassword,
+    password: CryptoJS.AES.encrypt(
+        req.body.password,
+        process.env.HASH_KEY
+      ).toString(),
   });
 
   newUser.save((err, data) => {
@@ -62,9 +65,10 @@ exports.login = async (req, res) => {
         message: "Invalid email or password",
       });
     }
-
-    const validPassword = await argon2.verify(user.password, req.body.password);
-    if (!validPassword) {
+    const bytes = CryptoJS.AES.decrypt(user.password, process.env.HASH_KEY);
+    const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
+  
+    if (originalPassword !== req.body.password) {
       return res.status(401).json({
         success: false,
         message: "Invalid email or password",

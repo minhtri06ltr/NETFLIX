@@ -1,7 +1,25 @@
 import { InfoOutlined, PlayArrow } from "@material-ui/icons";
+import { useEffect, useState } from "react";
+import { userRequest } from "../../helpers/constants";
 import "./featured.scss";
 
 const Featured = ({ type }) => {
+    const [content,setContent] = useState({})
+    useEffect(()=>{
+            const getRandomContent = async ()=>{
+                try {
+                    const res = await userRequest.get(`/movies/random?type=${type}`)
+                    if(res.data.success){
+                        setContent(res.data.movie[0])
+                    }
+                   
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            getRandomContent()
+    },[type])
+    console.log(content.img)
   return (
     <div className="featured">
       {type && (
@@ -26,21 +44,17 @@ const Featured = ({ type }) => {
         </div>
       )}
       <img
-        width="100%"
-        src="https://i.pinimg.com/originals/9c/74/52/9c7452da204cea4cb7a0f9a8ce12f126.jpg"
+       
+        src={content.img}
         alt=""
       />
       <div className="info">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/9/95/Hololive_Production.png"
+          src={content.imgTitle}
           alt=""
         />
         <span className="desc">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet esse
-          minima in commodi cum quis dolor repellendus dolorum unde? Ab. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Corrupti
-          consectetur adipisci esse accusantium sapiente officiis soluta,
-          explicabo voluptatem delectus quae!
+          {content.desc}
         </span>
         <div className="buttons">
           <button className="play">

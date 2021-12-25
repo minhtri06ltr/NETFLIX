@@ -1,6 +1,6 @@
 import "./watch.scss";
-import { ArrowBackOutlined, Movie } from "@material-ui/icons";
-import mp4 from "../../assets/mp4/ina.mp4";
+import { ArrowBackOutlined } from "@material-ui/icons";
+
 import { Link, useLocation } from "react-router-dom";
 const Watch = () => {
   const location = useLocation();

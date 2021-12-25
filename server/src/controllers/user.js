@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const argon2 = require("argon2");
+
 
 //UPDATE
 exports.updateUser = async (req, res) => {
@@ -7,7 +7,10 @@ exports.updateUser = async (req, res) => {
   //[2]: admin update their info
   if (req.user.id === req.params.id || req.user.isAdmin) {
     if (req.body.password) {
-      req.body.password = await argon2.hash(req.body.password);
+        req.body.password = CryptoJS.AES.encrypt(
+            req.body.password,
+            process.env.SECRET_KEY
+          ).toString();
     }
     try {
       const updatedUser = await User.findByIdAndUpdate(

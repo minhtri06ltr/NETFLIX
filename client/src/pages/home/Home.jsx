@@ -25,7 +25,7 @@ const Home = ({ type }) => {
     };
     getRandomList();
   }, [type, genre]); //when we change type or genra useEffect will trigger
-  console.log(lists);
+ 
   return (
     <div className="home">
       <Topbar />
