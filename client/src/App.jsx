@@ -8,7 +8,7 @@ import NotFound from "./pages/notfound/NotFound";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 
 const App = () => {
-  const user = true;
+  const user = false;
 
   return (
     <BrowserRouter>

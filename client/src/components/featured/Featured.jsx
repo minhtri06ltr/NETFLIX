@@ -18,7 +18,7 @@ const Featured = ({ type }) => {
                 }
             }
             getRandomContent()
-    },[type])
+    },[])
     console.log(content.img)
   return (
     <div className="featured">
