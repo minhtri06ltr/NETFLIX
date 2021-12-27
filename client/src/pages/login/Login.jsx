@@ -4,11 +4,16 @@ import { Link } from "react-router-dom";
 import { login } from "../../actions/auth";
 import "./login.scss";
 import CircularProgress from "@mui/material/CircularProgress";
-import AlertModal from "../../components/modals/AlertModal";
+
+import ReCAPTCHA from "react-google-recaptcha";
+import Toast from "../../components/modals/toast/Toast";
 const Login = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const [open, setOpen] = useState(false);
 
+  const [verifyCaptcha, setVerifyCaptcha] = useState(false);
+  const [alert, setAlert] = useState(null);
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
@@ -21,14 +26,38 @@ const Login = () => {
     });
   };
 
-  const userLogin = (e) => {
+  const userLogin = async (e) => {
     e.preventDefault();
 
     if (loginForm.email === "" || loginForm.password === "") {
-      alert("Please check input again");
+      setAlert({
+        type: "warning",
+        message: "Missing email or password",
+      });
+      setOpen(true);
+      setTimeout(() => setAlert(null), 1000);
+    } else if (!verifyCaptcha) {
+      setAlert({
+        type: "warning",
+        message: "Missing captcha",
+      });
+      setOpen(true);
+      setTimeout(() => setAlert(null), 1000);
     } else {
-      dispatch(login(loginForm));
+      const userLogin = await dispatch(login(loginForm));
+
+      if (!userLogin.success) {
+        setAlert({
+          type: "error",
+          message: userLogin.message,
+        });
+        setOpen(true);
+        setTimeout(() => setAlert(null), 1000);
+      }
     }
+  };
+  const handleCaptcha = (value) => {
+    setVerifyCaptcha(true);
   };
 
   return (
@@ -44,7 +73,8 @@ const Login = () => {
       </div>
 
       <div className="container">
-        {auth.error && <AlertModal message={auth.message} type="error" />}
+        <Toast info={alert} open={open} setOpen={setOpen} />
+
         <form onSubmit={userLogin}>
           <h1>Sign In</h1>
           <input
@@ -59,6 +89,11 @@ const Login = () => {
             name="password"
             id=""
             placeholder="Password"
+          />
+          <ReCAPTCHA
+            style={{ margin: "0 auto" }}
+            sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+            onChange={handleCaptcha}
           />
           <button className="loginButton">
             {auth.loading ? (

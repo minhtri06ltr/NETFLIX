@@ -17,11 +17,11 @@ export const login = (loginForm) => {
         return res.data;
       }
     } catch (error) {
-      console.log(error.response);
       dispatch({
         type: authConstants.LOGIN_FAILURE,
         payload: error.response.data.message,
       });
+      return error.response.data;
     }
   };
 };
