@@ -9,14 +9,36 @@ const createActivationToken = (payload) => {
   });
 };
 const createAccessToken = (payload) => {
-  return jwt.sign(payload, process.env.ACTIVATION_TOKEN_KEY, {
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_KEY, {
     expiresIn: "15m",
   });
 };
 const createRefreshToken = (payload) => {
-  return jwt.sign(payload, process.env.ACTIVATION_TOKEN_KEY, {
+  return jwt.sign(payload, process.env.REFRESH_TOKEN_KEY, {
     expiresIn: "7d",
   });
+};
+exports.activateEmail = async (req, res) => {
+  try {
+    const { activationToken } = req.body;
+    const user = jwt.verify(activationToken, process.env.ACTIVATION_TOKEN_KEY);
+    const newUser = new User({
+      username: user.username,
+      email: user.email,
+      password: user.password,
+    });
+    await newUser.save();
+    res.status(200).json({
+      success: true,
+      message: "Account has been activated",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      err: err.message,
+    });
+  }
 };
 exports.register = async (req, res) => {
   const userDB = await User.findOne({
@@ -48,37 +70,13 @@ exports.register = async (req, res) => {
   //active user with email
   const activationToken = createActivationToken(newUser);
 
-  const url = `${process.env.CLIENT_URL}/user/activate/${activationToken}`;
-  sendMail(req.body.email, url);
+  const url = `${process.env.CLIENT_URL}/users/activate/${activationToken}`;
+  sendMail(req.body.email, url, "activate");
   console.log("hi");
   res.status(200).json({
     success: true,
     message: "Register success! Please activate your email to continue",
   });
-
-  //   newUser.save((err, data) => {
-  //     if (err) {
-  //       console.log(err);
-  //       return res.status(500).json({
-  //         success: false,
-  //         message: "Internal server error",
-  //         err,
-  //       });
-  //     }
-  //     if (data) {
-  //       const accessToken = jwt.sign(
-  //         { id: data._id, isAdmin: data.isAdmin },
-  //         process.env.TOKEN_KEY,
-  //         { expiresIn: "5d" }
-  //       );
-  //       return res.status(200).json({
-  //         success: true,
-  //         message: "Welcome new user",
-  //         data,
-  //         accessToken,
-  //       });
-  //     }
-  //   });
 };
 
 exports.login = async (req, res) => {
@@ -92,8 +90,11 @@ exports.login = async (req, res) => {
         message: "Invalid email or password",
       });
     }
-    const bytes = CryptoJS.AES.decrypt(user.password, process.env.HASH_KEY);
-    const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
+    const bytes = await CryptoJS.AES.decrypt(
+      user.password,
+      process.env.HASH_KEY
+    );
+    const originalPassword = await bytes.toString(CryptoJS.enc.Utf8);
 
     if (originalPassword !== req.body.password) {
       return res.status(401).json({
@@ -101,24 +102,89 @@ exports.login = async (req, res) => {
         message: "Invalid email or password",
       });
     }
-    const { password, ...info } = user._doc;
-    const accessToken = jwt.sign(
-      { id: user._id, isAdmin: user.isAdmin },
-      process.env.TOKEN_KEY,
-      { expiresIn: "5d" }
-    );
+    //pass validate
+    const refreshToken = createRefreshToken({ id: user._id });
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      path: "/api/auth/refreshToken",
+      maxAge: 7 * 24 * 60 * 60 * 1000, //7d
+    });
     res.status(200).json({
       success: true,
       message: "Login successfull",
-      info,
-      accessToken,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
-      err,
+      err: err.message,
+    });
+  }
+};
+//get accessToken from refreshToken
+
+exports.getAccessToken = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken)
+    return res.status(400).json({
+      success: false,
+      message: "Please login",
+    });
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY, (err, user) => {
+    const accessToken = createAccessToken({ id: user.id });
+    res.status(200).json({
+      success: true,
+      message: "Get access token success",
+      accessToken,
+    });
+  });
+};
+exports.forgotPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Email does not exist",
+      });
+    }
+    const accessToken = createAccessToken({ id: user._id });
+    const url = `${process.env.CLIENT_URL}/user/reset/${accessToken}`;
+    sendMail(req.body.email, url, "forgotPassword");
+    res.status(200).json({
+      message: "Re-send password, please check your email",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      err: err.message,
+    });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    console.log(req.user);
+    await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        password: CryptoJS.AES.encrypt(
+          req.body.password,
+          process.env.HASH_KEY
+        ).toString(),
+      }
+    );
+    res.status(200).json({
+      success: true,
+      message: "Password have been changed",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      err: err.message,
     });
   }
 };
