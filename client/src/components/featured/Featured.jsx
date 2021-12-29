@@ -1,25 +1,24 @@
-import { InfoOutlined, PlayArrow } from "@material-ui/icons";
+import { InfoOutlined, PlayArrow } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { userRequest } from "../../helpers/constants";
 import "./featured.scss";
 
 const Featured = ({ type }) => {
-    const [content,setContent] = useState({})
-    useEffect(()=>{
-            const getRandomContent = async ()=>{
-                try {
-                    const res = await userRequest.get(`/movies/random?type=${type}`)
-                    if(res.data.success){
-                        setContent(res.data.movie[0])
-                    }
-                   
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-            getRandomContent()
-    },[])
-    console.log(content.img)
+  const [content, setContent] = useState({});
+  useEffect(() => {
+    const getRandomContent = async () => {
+      try {
+        const res = await userRequest.get(`/movies/random?type=${type}`);
+        if (res.data.success) {
+          setContent(res.data.movie[0]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getRandomContent();
+  }, [type]);
+  console.log(content.img);
   return (
     <div className="featured">
       {type && (
@@ -43,19 +42,10 @@ const Featured = ({ type }) => {
           </select>
         </div>
       )}
-      <img
-       
-        src={content.img}
-        alt=""
-      />
+      <img src={content.img} alt="" />
       <div className="info">
-        <img
-          src={content.imgTitle}
-          alt=""
-        />
-        <span className="desc">
-          {content.desc}
-        </span>
+        <img src={content.imgTitle} alt="" />
+        <span className="desc">{content.desc}</span>
         <div className="buttons">
           <button className="play">
             <PlayArrow />

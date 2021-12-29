@@ -14,14 +14,23 @@ export const login = (loginForm) => {
           payload: res.data.info,
         });
         localStorage.setItem("accessToken", res.data.accessToken);
+        localStorage.setItem("auth", true);
         return res.data;
       }
     } catch (error) {
       dispatch({
         type: authConstants.LOGIN_FAILURE,
-        payload: error.response.data.message,
       });
       return error.response.data;
     }
+  };
+};
+
+export const logout = () => {
+  return async (dispatch) => {
+    localStorage.clear();
+    dispatch({
+      type: authConstants.LOGOUT_SUCCESS,
+    });
   };
 };

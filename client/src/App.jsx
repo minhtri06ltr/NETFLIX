@@ -6,18 +6,22 @@ import Register from "./pages/register/Register";
 import Watch from "./pages/watch/Watch";
 import NotFound from "./pages/notfound/NotFound";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
+import { useSelector } from "react-redux";
 
 const App = () => {
-  const user = false;
+  const auth = useSelector((state) => state.auth);
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/register"
-          element={user ? <Navigate to="/" /> : <Register />}
+          element={auth.auth ? <Navigate to="/" /> : <Register />}
         />
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+        <Route
+          path="/login"
+          element={auth.auth ? <Navigate to="/" /> : <Login />}
+        />
 
         <Route path="/" element={<ProtectedRoute />}>
           <Route path="/" element={<Home />} />

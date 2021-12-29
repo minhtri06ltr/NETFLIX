@@ -72,9 +72,41 @@
 
         cursor: pointer;
       }
-      small {
-        text-align: center;
-        margin-top: 10px;
+      .iconList {
+        display: flex;
+        margin-top: 20px;
+        justify-content: space-around;
+
+        .facebook {
+          background-color: #385999;
+          border-radius: 50%;
+          height: 40px;
+          width: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+        .google {
+          background-color: #db4a39;
+          border-radius: 50%;
+          height: 40px;
+          width: 40px;
+          display: flex;
+          position: relative;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+        .github {
+          border-radius: 50%;
+          height: 40px;
+          width: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
       }
       span {
         text-align: center;

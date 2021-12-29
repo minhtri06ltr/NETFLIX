@@ -3,7 +3,7 @@ import {
   PlayArrow,
   ThumbDownAltOutlined,
   ThumbUpAltOutlined,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { userRequest } from "../../helpers/constants";
 import { Link } from "react-router-dom";

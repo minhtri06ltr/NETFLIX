@@ -3,7 +3,7 @@ const initState = {
   auth: false,
   loading: false,
   error: false,
-  message: "",
+
   info: {},
 };
 
@@ -28,9 +28,13 @@ const authReducer = (state = initState, action) => {
       state = {
         ...state,
         error: true,
-        message: action.payload,
+
         loading: false,
       };
+      break;
+    case authConstants.LOGOUT_SUCCESS:
+      state = initState;
+
       break;
     default:
       return state;

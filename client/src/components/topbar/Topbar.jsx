@@ -1,10 +1,12 @@
 import "./topbar.scss";
-import { ArrowDropDown, Notifications, Search } from "@material-ui/icons";
+import { ArrowDropDown, Notifications, Search } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../actions/auth";
 const Topbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-
+  const dispatch = useDispatch();
   //when we scroll -> trigger this function
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
@@ -44,7 +46,7 @@ const Topbar = () => {
             <ArrowDropDown className="topbar-icon" />
             <div className="options">
               <span>Settings</span>
-              <span>Log out</span>
+              <span onClick={() => dispatch(logout)}>Log out</span>
             </div>
           </div>
         </div>

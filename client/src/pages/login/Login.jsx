@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { login } from "../../actions/auth";
 import "./login.scss";
 import CircularProgress from "@mui/material/CircularProgress";
-
 import ReCAPTCHA from "react-google-recaptcha";
 import Toast from "../../components/modals/toast/Toast";
+import { Facebook, GitHub, Google } from "@mui/icons-material";
 const Login = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -110,10 +110,17 @@ const Login = () => {
               <b>Sign up now</b>
             </Link>
           </span>
-          <small>
-            This page is protected by Google reCAPTCHA to ensure you're not a
-            bot, <b>Learn more</b>
-          </small>
+          <div className="iconList">
+            <div className="facebook">
+              <Facebook />
+            </div>
+            <div className="google">
+              <Google className="googleLogoColor" />
+            </div>
+            <div className="github">
+              <GitHub sx={{ fontSize: 40 }} />
+            </div>
+          </div>
         </form>
       </div>
     </div>

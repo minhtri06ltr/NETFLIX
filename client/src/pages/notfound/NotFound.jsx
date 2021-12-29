@@ -1,4 +1,4 @@
-import { ArrowBack } from "@material-ui/icons";
+import { ArrowBack } from "@mui/icons-material";
 import "./notfound.scss";
 
 const NotFound = () => {
