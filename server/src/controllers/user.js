@@ -1,67 +1,49 @@
 const User = require("../models/user");
-
+const cloudinary = require("cloudinary");
+const fs = require("fs");
 //UPDATE
-exports.updateUser = async (req, res) => {
-  // [1]: user try to update their info
-  //[2]: admin update their info
-  if (req.user.id === req.params.id || req.user.isAdmin) {
-    if (req.body.password) {
-      req.body.password = CryptoJS.AES.encrypt(
-        req.body.password,
-        process.env.SECRET_KEY
-      ).toString();
-    }
-    try {
-      const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
-        {
-          $set: req.body, //set new data when = all req.boy
-        },
-        { new: true }
-      );
-      return res.status(200).json({
-        success: true,
-        message: "Update user successfull",
-        updatedUser,
-      });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        success: false,
-        message: "Internal server error",
-        err,
-      });
-    }
-  } else {
-    return res.status(403).json({
+exports.adminUpdateUser = async (req, res) => {
+  if (req.body.password) {
+    req.body.password = CryptoJS.AES.encrypt(
+      req.body.password,
+      process.env.SECRET_KEY
+    ).toString();
+  }
+  try {
+    await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body, //set new data when = all req.boy
+      },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Update user successfull",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
       success: false,
-      message: "You are not allow to do this action",
+      message: "Internal server error",
+      err: err.message,
     });
   }
 };
 //DELETE
 exports.deleteUser = async (req, res) => {
-  //[2]: admin can delete their info
-  if (req.user.id === req.params.id || req.user.isAdmin) {
-    try {
-      const updatedUser = await User.findByIdAndDelete(req.params.id);
-      return res.status(200).json({
-        success: true,
-        message: "Delete user successfull",
-        updatedUser,
-      });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        success: false,
-        message: "Internal server error",
-        err,
-      });
-    }
-  } else {
-    return res.status(403).json({
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    return res.status(200).json({
+      success: true,
+      message: "Delete user successfull",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
       success: false,
-      message: "You are not allow to do this action",
+      message: "Internal server error",
+      err: err.message,
     });
   }
 };
@@ -107,7 +89,6 @@ exports.getAllUser = async (req, res) => {
   }
 };
 //GET USER STATS
-
 exports.getUserPerMonth = async (req, res) => {
   if (req.user.isAdmin) {
     const today = new Date();
@@ -143,6 +124,44 @@ exports.getUserPerMonth = async (req, res) => {
     return res.status(403).json({
       success: false,
       message: "You are not allow to do this action",
+    });
+  }
+};
+//USER UPLOAD AVATAR
+const removeTmp = (path) => {
+  console.log(path);
+  fs.unlink(path, (err) => {
+    if (err) throw err;
+    console.log("Delete successfull");
+  });
+};
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+exports.uploadAvatar = async (req, res) => {
+  try {
+    const file = req.files.file;
+    cloudinary.v2.uploader.upload(
+      file.tempFilePath,
+      {
+        folder: "avatar",
+        width: 150, //resize picture
+        height: 150,
+        crop: "fill",
+      },
+      async (err, result) => {
+        if (err) throw err;
+        removeTmp(file.tempFilePath);
+        console.log({ result });
+      }
+    );
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      err: err.message,
     });
   }
 };

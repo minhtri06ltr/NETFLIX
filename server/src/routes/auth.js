@@ -4,6 +4,7 @@ const {
   activateEmail,
   getAccessToken,
   forgotPassword,
+  logout,
   resetPassword,
 } = require("../controllers/auth");
 const { verifyToken } = require("../middlewares/auth");
@@ -19,4 +20,5 @@ router.post("/activation", activateEmail);
 router.post("/refreshToken", getAccessToken);
 router.post("/forgot", forgotPassword);
 router.post("/reset", verifyToken, resetPassword);
+router.get("/logout", logout);
 module.exports = router;
