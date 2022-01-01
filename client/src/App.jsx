@@ -6,10 +6,20 @@ import Register from "./pages/register/Register";
 import Watch from "./pages/watch/Watch";
 import NotFound from "./pages/notfound/NotFound";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import ActivateEmail from "./pages/activateemail/ActivateEmail";
+import { useEffect } from "react";
+import { getToken } from "./actions/auth";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const lsAuth = localStorage.getItem("auth");
+    if (lsAuth) {
+      dispatch(getToken());
+    }
+  }, [auth.auth, dispatch]);
 
   return (
     <BrowserRouter>
@@ -22,7 +32,10 @@ const App = () => {
           path="/login"
           element={auth.auth ? <Navigate to="/" /> : <Login />}
         />
-
+        <Route
+          path="/users/activate/:activationToken"
+          element={<ActivateEmail />}
+        />
         <Route path="/" element={<ProtectedRoute />}>
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<Home type="movie" />} />

@@ -8,12 +8,6 @@ const Toast = ({ info, open, setOpen }) => {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
   return info === null ? null : (
     <Snackbar
       open={open}
@@ -21,10 +15,9 @@ const Toast = ({ info, open, setOpen }) => {
         return <Slide {...props} direction="down" />;
       }}
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      key={"top" + "center"}
     >
       <Alert
-        onClose={() => handleClose}
+        onClose={() => setOpen(false)}
         severity={info.type}
         sx={{ width: "100%" }}
       >

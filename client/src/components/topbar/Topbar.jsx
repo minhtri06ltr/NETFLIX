@@ -2,9 +2,10 @@ import "./topbar.scss";
 import { ArrowDropDown, Notifications, Search } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/auth";
 const Topbar = () => {
+  const auth = useSelector((state) => state.auth);
   const [isScrolled, setIsScrolled] = useState(false);
   const dispatch = useDispatch();
   //when we scroll -> trigger this function

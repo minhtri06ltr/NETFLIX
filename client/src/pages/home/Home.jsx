@@ -25,12 +25,12 @@ const Home = ({ type }) => {
     };
     getRandomList();
   }, [type, genre]); //when we change type or genra useEffect will trigger
- 
+
   return (
     <div className="home">
       <Topbar />
 
-      <Featured type={type} />
+      <Featured type={type} setGenre={setGenre} />
 
       {lists.map((list, index) => {
         return <List list={list} key={index} />;

@@ -11,7 +11,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
-
   const [verifyCaptcha, setVerifyCaptcha] = useState(false);
   const [alert, setAlert] = useState(null);
   const [loginForm, setLoginForm] = useState({
@@ -20,6 +19,7 @@ const Login = () => {
   });
 
   const formChange = (e) => {
+    setOpen(false);
     setLoginForm({
       ...loginForm,
       [e.target.name]: e.target.value,
@@ -35,24 +35,24 @@ const Login = () => {
         message: "Missing email or password",
       });
       setOpen(true);
-      setTimeout(() => setAlert(null), 1000);
+      //   setTimeout(() => setAlert(null), 1000);
     } else if (!verifyCaptcha) {
       setAlert({
         type: "warning",
         message: "Missing captcha",
       });
       setOpen(true);
-      setTimeout(() => setAlert(null), 1000);
+      //   setTimeout(() => setAlert(null), 1000);
     } else {
-      const userLogin = await dispatch(login(loginForm));
+      const response = await dispatch(login(loginForm));
 
-      if (!userLogin.success) {
+      if (!response.success) {
         setAlert({
           type: "error",
-          message: userLogin.message,
+          message: response.message,
         });
         setOpen(true);
-        setTimeout(() => setAlert(null), 1000);
+        // setTimeout(() => setAlert(null), 1000);
       }
     }
   };
@@ -62,6 +62,7 @@ const Login = () => {
 
   return (
     <div className="login">
+      {open && <Toast info={alert} open={open} setOpen={setOpen} />}
       <div className="top">
         <div className="wrapper">
           <img
@@ -73,8 +74,6 @@ const Login = () => {
       </div>
 
       <div className="container">
-        <Toast info={alert} open={open} setOpen={setOpen} />
-
         <form onSubmit={userLogin}>
           <h1>Sign In</h1>
           <input
@@ -110,6 +109,13 @@ const Login = () => {
               <b>Sign up now</b>
             </Link>
           </span>
+          <Link
+            style={{ textAlign: "center", color: "tomato" }}
+            to="/forgot"
+            className="link"
+          >
+            <b>Forgot your password?</b>
+          </Link>
           <div className="iconList">
             <div className="facebook">
               <Facebook />

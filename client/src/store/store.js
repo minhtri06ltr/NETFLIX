@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 import authReducer from "../reducers/auth";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
+import { Provider } from "react-redux";
 
 const store = createStore(
   combineReducers({
@@ -10,4 +11,8 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(thunk))
 ); //store all state
 
-export default store;
+const DataProvider = ({ children }) => {
+  return <Provider store={store}>{children}</Provider>;
+};
+
+export default DataProvider;

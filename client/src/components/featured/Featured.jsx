@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { userRequest } from "../../helpers/constants";
 import "./featured.scss";
 
-const Featured = ({ type }) => {
+const Featured = ({ type, setGenre }) => {
   const [content, setContent] = useState({});
   useEffect(() => {
     const getRandomContent = async () => {
@@ -12,19 +12,21 @@ const Featured = ({ type }) => {
         if (res.data.success) {
           setContent(res.data.movie[0]);
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
     getRandomContent();
   }, [type]);
-  console.log(content.img);
+
   return (
     <div className="featured">
       {type && (
         <div className="category">
           <span>{type === "movies" ? "Movies" : "Series"}</span>
-          <select name="genre" id="genre">
+          <select
+            name="genre"
+            id="genre"
+            onChange={(e) => setGenre(e.target.value)}
+          >
             <option>Genre</option>
             <option value="adventure">Adventure</option>
             <option value="comedy">Comedy</option>

@@ -31,7 +31,7 @@ const ListItem = ({ index, item }) => {
 
     getMovie();
     return () => controller.abort();
-  }, []);
+  }, [item]);
 
   return (
     <Link to="/watch" state={{ movie: movie }}>
