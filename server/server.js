@@ -18,8 +18,7 @@ mongoose
 app.use(
   cors({
     credentials: true,
-    origin:
-      "https://port-3000-nodejs-tiny-finland-laptopdienthoai1900975.preview.codeanywhere.com",
+    origin: `${process.env.CLIENT_URL}`,
   })
 );
 app.use(express.json());

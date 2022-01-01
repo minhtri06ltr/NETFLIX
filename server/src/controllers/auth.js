@@ -55,7 +55,7 @@ exports.register = async (req, res) => {
 
   const url = `${process.env.CLIENT_URL}/users/activate/${activationToken}`;
   sendMail(req.body.email, url, "activate");
-  console.log("hi");
+
   res.status(200).json({
     success: true,
     message: "Register success! Please activate your email to continue",
@@ -88,7 +88,7 @@ exports.login = async (req, res) => {
     }
     //pass validate
     const refreshToken = createRefreshToken({ id: user._id });
-    console.log(refreshToken);
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       path: "/api/auth/refreshToken",
@@ -112,7 +112,6 @@ exports.login = async (req, res) => {
 //get accessToken from refreshToken
 
 exports.getAccessToken = async (req, res) => {
-  console.log(req.cookies);
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken)
     return res.status(400).json({
@@ -154,7 +153,6 @@ exports.forgotPassword = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
   try {
-    console.log(req.user);
     await User.findOneAndUpdate(
       { _id: req.user.id },
       {

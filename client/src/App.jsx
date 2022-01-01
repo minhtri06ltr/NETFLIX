@@ -9,10 +9,11 @@ import ProtectedRoute from "./components/routing/ProtectedRoute";
 import { useSelector, useDispatch } from "react-redux";
 import ActivateEmail from "./pages/activateemail/ActivateEmail";
 import { useEffect } from "react";
-import { getToken } from "./actions/auth";
+import { getToken, getUser } from "./actions/auth";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   useEffect(() => {
     const lsAuth = localStorage.getItem("auth");
@@ -20,7 +21,11 @@ const App = () => {
       dispatch(getToken());
     }
   }, [auth.auth, dispatch]);
-
+  useEffect(() => {
+    if (auth.token) {
+      dispatch(getUser());
+    }
+  }, [auth.token, dispatch]);
   return (
     <BrowserRouter>
       <Routes>

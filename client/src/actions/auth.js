@@ -1,4 +1,4 @@
-import { publicRequest } from "../helpers/constants";
+import { publicRequest,userRequest } from "../helpers/constants";
 import { authConstants } from "./constants";
 
 export const login = (loginForm) => {
@@ -11,9 +11,8 @@ export const login = (loginForm) => {
       if (res.data.success) {
         dispatch({
           type: authConstants.LOGIN_SUCCESS,
-          payload: res.data.info,
         });
-        localStorage.setItem("accessToken", res.data.accessToken);
+
         localStorage.setItem("auth", true);
         return res.data;
       }
@@ -64,13 +63,30 @@ export const getToken = () => {
   return async (dispatch) => {
     try {
       const response = await publicRequest.post("/auth/refreshToken");
-      console.log(response);
+      dispatch({
+        type: authConstants.GET_TOKEN,
+        payload: response.data.accessToken,
+      });
       return response.data;
     } catch (error) {
       return error.response.data;
     }
   };
 };
+export const getUser = () => {
+    return async (dispatch) => {
+      try {
+        const response = await userRequest.get("/users/info");
+        dispatch({
+          type: authConstants.GET_USER,
+          payload: response.data.user,
+        });
+        return response.data;
+      } catch (error) {
+        return error.response.data;
+      }
+    };
+  };
 
 export const logout = () => {
   return async (dispatch) => {

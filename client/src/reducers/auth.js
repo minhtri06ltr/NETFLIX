@@ -20,9 +20,8 @@ const authReducer = (state = initState, action) => {
     case authConstants.LOGIN_SUCCESS:
       state = {
         ...state,
-        auth: true,
-        info: action.payload,
         loading: false,
+        auth: true,
       };
       break;
     case authConstants.LOGIN_FAILURE:
@@ -74,6 +73,15 @@ const authReducer = (state = initState, action) => {
         token: action.payload,
       };
       break;
+
+    //GET USER
+    case authConstants.GET_USER:
+      state = {
+        ...state,
+        info: action.payload,
+      };
+      break;
+
     case authConstants.LOGOUT_SUCCESS:
       state = initState;
 
