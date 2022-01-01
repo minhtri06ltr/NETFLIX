@@ -41,3 +41,40 @@ exports.verifyTokenAndAdmin = async (req, res, next) => {
     });
   }
 };
+exports.emailValidate = async (req, res, next) => {
+  if (req.body.username) {
+    next();
+  } else {
+    const emailDB = await User.findOne({
+      email: req.body.email,
+    });
+
+    if (emailDB) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already taken",
+        validate: false,
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Email don't exist",
+        validate: true,
+      });
+    }
+  }
+};
+
+exports.usernameValidate = async (req, res, next) => {
+  const usernameDB = await User.findOne({
+    username: req.body.username,
+  });
+  if (usernameDB)
+    return res.status(400).json({
+      success: false,
+      message: "User name already taken",
+      validate: false,
+    });
+
+  next();
+};

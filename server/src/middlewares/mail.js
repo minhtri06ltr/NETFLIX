@@ -1240,7 +1240,7 @@ exports.sendMail = (to, url, type) => {
                                                   target="_blank"
                                                 >
                                                   <img
-                                                    src="https://firebasestorage.googleapis.com/v0/b/holo-83a3a.appspot.com/o/image-1.png?alt=media&token=f2be26f5-1403-4cc3-8ee1-2ff44c9ceddd"
+                                                    src="https://firebasestorage.googleapis.com/v0/b/holo-83a3a.appspot.com/o/image-1%20(2).png?alt=media&token=62a6ccdb-db80-4e4f-a041-a3053297ee80"
                                                     alt="Facebook"
                                                     title="Facebook"
                                                     width="32"
@@ -1785,7 +1785,7 @@ exports.sendMail = (to, url, type) => {
                                                   target="_blank"
                                                 >
                                                   <img
-                                                    src="https://firebasestorage.googleapis.com/v0/b/holo-83a3a.appspot.com/o/image-2.png?alt=media&token=224800bf-b92a-48b5-b406-082c698aff7c"
+                                                    src="https://firebasestorage.googleapis.com/v0/b/holo-83a3a.appspot.com/o/image-1.png?alt=media&token=1445562a-9144-40ff-a624-3a0fc2b24cb1"
                                                     alt="Facebook"
                                                     title="Facebook"
                                                     width="32"

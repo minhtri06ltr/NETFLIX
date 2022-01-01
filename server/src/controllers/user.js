@@ -154,7 +154,11 @@ exports.uploadAvatar = async (req, res) => {
       async (err, result) => {
         if (err) throw err;
         removeTmp(file.tempFilePath);
-        console.log({ result });
+        res.status(200).json({
+          success: true,
+          message: "Upload your avatar successfull",
+          url: result.secure_url,
+        });
       }
     );
   } catch (err) {

@@ -41,23 +41,6 @@ exports.activateEmail = async (req, res) => {
   }
 };
 exports.register = async (req, res) => {
-  const userDB = await User.findOne({
-    username: req.body.username,
-  });
-  if (userDB)
-    return res.status(400).json({
-      success: false,
-      message: "User name already taken",
-    });
-  const emailDB = await User.findOne({
-    email: req.body.email,
-  });
-  if (emailDB)
-    return res.status(400).json({
-      success: false,
-      message: "Email already taken",
-    });
-
   const newUser = {
     username: req.body.username,
     email: req.body.email,
@@ -76,6 +59,7 @@ exports.register = async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Register success! Please activate your email to continue",
+    validate: true,
   });
 };
 
@@ -125,6 +109,7 @@ exports.login = async (req, res) => {
 //get accessToken from refreshToken
 
 exports.getAccessToken = async (req, res) => {
+  console.log(req.cookies);
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken)
     return res.status(400).json({

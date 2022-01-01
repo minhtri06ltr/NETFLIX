@@ -7,11 +7,15 @@ const {
   logout,
   resetPassword,
 } = require("../controllers/auth");
-const { verifyToken } = require("../middlewares/auth");
+const {
+  verifyToken,
+  emailValidate,
+  usernameValidate,
+} = require("../middlewares/auth");
 const router = require("express").Router();
 
 //register
-router.post("/register", register);
+router.post("/register", emailValidate, usernameValidate, register);
 //login
 router.post("/login", login);
 //activate
