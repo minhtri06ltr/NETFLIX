@@ -1,4 +1,4 @@
-import { publicRequest,userRequest } from "../helpers/constants";
+import { publicRequest, userRequest } from "../helpers/constants";
 import { authConstants } from "./constants";
 
 export const login = (loginForm) => {
@@ -74,19 +74,19 @@ export const getToken = () => {
   };
 };
 export const getUser = () => {
-    return async (dispatch) => {
-      try {
-        const response = await userRequest.get("/users/info");
-        dispatch({
-          type: authConstants.GET_USER,
-          payload: response.data.user,
-        });
-        return response.data;
-      } catch (error) {
-        return error.response.data;
-      }
-    };
+  return async (dispatch) => {
+    try {
+      const response = await userRequest.get("/users/info");
+      dispatch({
+        type: authConstants.GET_USER,
+        payload: response.data.user,
+      });
+      return response.data;
+    } catch (error) {
+      return error.response.data;
+    }
   };
+};
 
 export const logout = () => {
   return async (dispatch) => {

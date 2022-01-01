@@ -8,14 +8,10 @@ axios.defaults.withCredentials = true;
 export const publicRequest = axios.create({
   baseURL: apiUrl,
 });
-const getToken = () => {
-  const state = store.getState();
-  return state.auth.token;
-};
-console.log(getToken());
+
 export const userRequest = axios.create({
   baseURL: apiUrl,
   headers: {
-    token: `Bearer ${getToken()}`,
+    token: `Bearer ${store.getState().auth.token}`,
   },
 });

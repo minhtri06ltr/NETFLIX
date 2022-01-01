@@ -24,6 +24,7 @@ const App = () => {
   useEffect(() => {
     if (auth.token) {
       dispatch(getUser());
+      console.log("trigger");
     }
   }, [auth.token, dispatch]);
   return (
