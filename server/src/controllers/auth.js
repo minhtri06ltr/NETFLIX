@@ -88,10 +88,13 @@ exports.login = async (req, res) => {
     }
     //pass validate
     const refreshToken = createRefreshToken({ id: user._id });
+    console.log(refreshToken);
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       path: "/api/auth/refreshToken",
-      maxAge: 7 * 24 * 60 * 60 * 1000, //7d
+      maxAge: 7 * 24 * 60 * 60 * 1000, //7d,
+      sameSite: "None",
+      secure: true,
     });
     res.status(200).json({
       success: true,

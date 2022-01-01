@@ -14,7 +14,14 @@ mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => console.log("MongoDB connect successfull"))
   .catch((error) => console.log(error));
-app.use(cors());
+
+app.use(
+  cors({
+    credentials: true,
+    origin:
+      "https://port-3000-nodejs-tiny-finland-laptopdienthoai1900975.preview.codeanywhere.com",
+  })
+);
 app.use(express.json());
 app.use(
   fileUpload({
