@@ -14,6 +14,7 @@ const Topbar = () => {
     //reset
     return () => (window.onscroll = null);
   };
+
   return (
     <div className={isScrolled ? "topbar scrolled" : "topbar"}>
       <div className="container">
@@ -39,15 +40,12 @@ const Topbar = () => {
           <Search className="topbar-icon" />
           <span>KID</span>
           <Notifications className="topbar-icon" />
-          <img
-            src="https://i.pinimg.com/originals/9c/74/52/9c7452da204cea4cb7a0f9a8ce12f126.jpg"
-            alt=""
-          />
+          <img src={auth.info.profileImg} alt="" />
           <div className="profile">
             <ArrowDropDown className="topbar-icon" />
             <div className="options">
-              <span>Settings</span>
-              <span onClick={() => dispatch(logout)}>Log out</span>
+              <span>Profile</span>
+              <span onClick={() => dispatch(logout())}>Logout</span>
             </div>
           </div>
         </div>

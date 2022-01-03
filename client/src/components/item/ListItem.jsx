@@ -5,10 +5,10 @@ import {
   ThumbUpAltOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { userRequest } from "../../helpers/constants";
+
 import { Link } from "react-router-dom";
 import "./listitem.scss";
-
+import axios from "axios";
 const ListItem = ({ index, item }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [movie, setMovie] = useState({});
@@ -17,7 +17,7 @@ const ListItem = ({ index, item }) => {
     const signal = controller.signal;
     const getMovie = async () => {
       try {
-        const res = await userRequest.get(`/movies/find/${item}`, {
+        const res = await axios.get(`/movies/find/${item}`, {
           signal: signal,
         });
 

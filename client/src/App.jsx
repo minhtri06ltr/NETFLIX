@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ActivateEmail from "./pages/activateemail/ActivateEmail";
 import { useEffect } from "react";
 import { getToken, getUser } from "./actions/auth";
+import ForgotPassword from "./pages/forgotpassword/ForgotPassword";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -24,7 +25,6 @@ const App = () => {
   useEffect(() => {
     if (auth.token) {
       dispatch(getUser());
-      console.log("trigger");
     }
   }, [auth.token, dispatch]);
   return (
@@ -38,6 +38,7 @@ const App = () => {
           path="/login"
           element={auth.auth ? <Navigate to="/" /> : <Login />}
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route
           path="/users/activate/:activationToken"
           element={<ActivateEmail />}

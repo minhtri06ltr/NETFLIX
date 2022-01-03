@@ -4,7 +4,7 @@ import Featured from "../../components/featured/Featured";
 import List from "../../components/list/List";
 import Topbar from "../../components/topbar/Topbar";
 import "./home.scss";
-import { userRequest } from "../../helpers/constants";
+import axios from "axios";
 
 const Home = ({ type }) => {
   const [lists, setLists] = useState([]);
@@ -13,7 +13,7 @@ const Home = ({ type }) => {
   useEffect(() => {
     const getRandomList = async () => {
       try {
-        const res = await userRequest.get(
+        const res = await axios.get(
           `lists${type ? "?type=" + type : ""}${genre ? "&genre=" + genre : ""}`
         );
         if (res.data.success) {

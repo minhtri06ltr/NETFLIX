@@ -1,21 +1,20 @@
-import { publicRequest, userRequest } from "../helpers/constants";
 import { authConstants } from "./constants";
-
+import { setAuthToken } from "../utils/setAuthToken";
+import axios from "axios";
 export const login = (loginForm) => {
   return async (dispatch) => {
     dispatch({
       type: authConstants.LOGIN_REQUEST,
     });
     try {
-      const res = await publicRequest.post("/auth/login", loginForm);
-      if (res.data.success) {
-        dispatch({
-          type: authConstants.LOGIN_SUCCESS,
-        });
+      const res = await axios.post("/auth/login", loginForm);
 
-        localStorage.setItem("auth", true);
-        return res.data;
-      }
+      dispatch({
+        type: authConstants.LOGIN_SUCCESS,
+      });
+
+      localStorage.setItem("auth", true);
+      return res.data;
     } catch (error) {
       dispatch({
         type: authConstants.LOGIN_FAILURE,
@@ -31,7 +30,7 @@ export const register = (registerForm) => {
       type: authConstants.REGISTER_REQUEST,
     });
     try {
-      const res = await publicRequest.post("/auth/register", registerForm);
+      const res = await axios.post("/auth/register", registerForm);
       dispatch({
         type: authConstants.REGISTER_SUCCESS,
         payload: res.data,
@@ -50,7 +49,7 @@ export const register = (registerForm) => {
 export const activateEmail = (activationToken) => {
   return async (dispatch) => {
     try {
-      const response = await publicRequest.post("/auth/activation", {
+      const response = await axios.post("/auth/activation", {
         activationToken,
       });
       return response.data;
@@ -62,37 +61,41 @@ export const activateEmail = (activationToken) => {
 export const getToken = () => {
   return async (dispatch) => {
     try {
-      const response = await publicRequest.post("/auth/refreshToken");
+      const response = await axios.post("/auth/refreshToken");
       dispatch({
         type: authConstants.GET_TOKEN,
         payload: response.data.accessToken,
       });
+      await setAuthToken(response.data.accessToken);
       return response.data;
     } catch (error) {
       return error.response.data;
     }
   };
 };
-export const getUser = () => {
+export const getUser = (token) => {
   return async (dispatch) => {
     try {
-      const response = await userRequest.get("/users/info");
+      const response = await axios.get("/users/info");
       dispatch({
         type: authConstants.GET_USER,
         payload: response.data.user,
       });
       return response.data;
     } catch (error) {
-      return error.response.data;
+      console.log(error);
     }
   };
 };
 
 export const logout = () => {
   return async (dispatch) => {
-    localStorage.clear();
-    dispatch({
-      type: authConstants.LOGOUT_SUCCESS,
-    });
+    try {
+      await axios.get("/auth/logout");
+      localStorage.removeItem("auth");
+      window.location.href = "/";
+    } catch (error) {
+      window.location.href = "/";
+    }
   };
 };

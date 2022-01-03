@@ -3,7 +3,7 @@ const initState = {
   auth: false,
   loading: false,
   error: false,
-  token: "",
+
   info: {},
 };
 

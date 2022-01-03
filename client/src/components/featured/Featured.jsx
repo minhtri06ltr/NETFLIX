@@ -1,14 +1,14 @@
 import { InfoOutlined, PlayArrow } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { userRequest } from "../../helpers/constants";
-import "./featured.scss";
 
+import "./featured.scss";
+import axios from "axios";
 const Featured = ({ type, setGenre }) => {
   const [content, setContent] = useState({});
   useEffect(() => {
     const getRandomContent = async () => {
       try {
-        const res = await userRequest.get(`/movies/random?type=${type}`);
+        const res = await axios.get(`/movies/random?type=${type}`);
         if (res.data.success) {
           setContent(res.data.movie[0]);
         }
