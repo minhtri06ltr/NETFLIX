@@ -1,7 +1,7 @@
 import "./profile.scss";
 import Topbar from "../../components/topbar/Topbar";
 import { useSelector } from "react-redux";
-import { CameraAltOutlined } from "@mui/icons-material";
+import { CameraAlt } from "@mui/icons-material";
 const Profile = () => {
   const auth = useSelector((state) => state.auth);
   return (
@@ -13,7 +13,10 @@ const Profile = () => {
         <div className="center">
           <div className="centerLeft">
             <img src={auth.info.profileImg} alt="" className="avatar" />
-            <CameraAltOutlined className="uploadIcon" />
+            <label htmlFor="icon-button-file">
+            <input type="file" accept="image/*" id="icon-button-file" style={{ display: "none" }} />
+            <CameraAlt className="uploadIcon" />
+            </label>
           </div>
           <div className="centerRight">
             <form>
