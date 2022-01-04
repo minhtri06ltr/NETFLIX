@@ -111,7 +111,7 @@ const Login = () => {
           </span>
           <Link
             style={{ textAlign: "center", color: "tomato" }}
-            to="/forgot"
+            to="/forgot-password"
             className="link"
           >
             <b>Forgot your password?</b>

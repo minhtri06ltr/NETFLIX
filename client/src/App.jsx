@@ -11,6 +11,7 @@ import ActivateEmail from "./pages/activateemail/ActivateEmail";
 import { useEffect } from "react";
 import { getToken, getUser } from "./actions/auth";
 import ForgotPassword from "./pages/forgotpassword/ForgotPassword";
+import ResetPassword from "./pages/resetpassword/ResetPassword";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -39,6 +40,7 @@ const App = () => {
           element={auth.auth ? <Navigate to="/" /> : <Login />}
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/user/reset/:resetToken" element={<ResetPassword />} />
         <Route
           path="/users/activate/:activationToken"
           element={<ActivateEmail />}

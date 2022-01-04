@@ -88,6 +88,52 @@ export const getUser = (token) => {
   };
 };
 
+export const resetPassowrd = (resetPassword,resetToken) => {
+   
+  return async (dispatch) => {
+    dispatch({
+        type: authConstants.RESET_PASSWORD_REQUEST
+    })
+    try {
+       
+      const response = await axios.post("/auth/reset",{resetPassword},{
+        headers: {token:`Bearer ${resetToken}`}
+      });
+      dispatch({
+        type: authConstants.RESET_PASSWORD_SUCCESS
+    })
+      return response.data;
+    } catch (error) {
+        dispatch({
+            type: authConstants.RESET_PASSWORD_FAILURE
+        })
+   
+      return error.response.data;
+    }
+    
+  };
+};
+export const forgotPassword = (email) => {
+  return async (dispatch) => {
+    dispatch({
+        type: authConstants.FORGOT_PASSWORD_REQUEST
+    })
+    try {
+       
+      const response = await axios.post("/auth/forgot", { email });
+      dispatch({
+        type: authConstants.FORGOT_PASSWORD_SUCCESS
+    })
+      return response.data;
+    } catch (error) {
+        dispatch({
+            type: authConstants.FORGOT_PASSWORD_FAILURE
+        })
+     
+      return error.response.data;
+    }
+  };
+};
 export const logout = () => {
   return async (dispatch) => {
     try {

@@ -141,6 +141,7 @@ exports.forgotPassword = async (req, res) => {
     sendMail(req.body.email, url, "forgotPassword");
     res.status(200).json({
       message: "Re-send password, please check your email",
+      success:true,
     });
   } catch (err) {
     return res.status(500).json({
@@ -152,12 +153,13 @@ exports.forgotPassword = async (req, res) => {
 };
 
 exports.resetPassword = async (req, res) => {
+  
   try {
     await User.findOneAndUpdate(
       { _id: req.user.id },
       {
         password: CryptoJS.AES.encrypt(
-          req.body.password,
+          req.body.resetPassword,
           process.env.HASH_KEY
         ).toString(),
       }

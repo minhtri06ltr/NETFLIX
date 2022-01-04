@@ -82,6 +82,47 @@ const authReducer = (state = initState, action) => {
       };
       break;
 
+       //FORGOT PASSWORD
+    case authConstants.FORGOT_PASSWORD_REQUEST:
+        state = {
+          ...state,
+          loading: true,
+        };
+        break;
+    case authConstants.FORGOT_PASSWORD_SUCCESS:
+            state = {
+              ...state,
+              loading: false,
+            };
+            break;
+    case authConstants.FORGOT_PASSWORD_FAILURE:
+                state = {
+                  ...state,
+                  loading: false,
+                };
+                break;
+
+
+                //RESET PASSWORD
+    case authConstants.RESET_PASSWORD_REQUEST:
+        state = {
+          ...state,
+          loading: true,
+        };
+        break;
+    case authConstants.RESET_PASSWORD_SUCCESS:
+            state = {
+              ...state,
+              loading: false,
+            };
+            break;
+    case authConstants.RESET_PASSWORD_FAILURE:
+                state = {
+                  ...state,
+                  loading: false,
+                };
+                break;
+
     case authConstants.LOGOUT_SUCCESS:
       state = initState;
 
