@@ -1,0 +1,73 @@
+.profilePage {
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 100%
+    ),
+    url(https://images4.alphacoders.com/117/1176244.png);
+  background-size: cover;
+  position: relative;
+  height: 100vh;
+  width: 100wh;
+  .profileContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    .containerTitle {
+      color: white;
+    }
+    .line {
+      width: 45%;
+      margin: 15px;
+      height: 1px;
+      background-color: #484444;
+    }
+    .center {
+      display: flex;
+      width: 40%;
+      justify-content: space-between;
+      .centerRight {
+        form {
+          color: white;
+          label {
+            display: block;
+          }
+          .field {
+            margin: 20px;
+            input {
+              font-size: 15px;
+              height: 20px;
+              width: 250px;
+              padding: 10px;
+            }
+          }
+        }
+      }
+      .centerLeft {
+        img {
+          height: 150px;
+          width: 150px;
+          margin-top: 30px;
+        }
+      }
+    }
+    .bottom {
+      button {
+        border: none;
+        padding: 10px;
+        background-color: white;
+        font-weight: 500;
+        font-size: 20px;
+        margin-top: 5px;
+        cursor: pointer;
+      }
+    }
+    .warning {
+      color: red;
+      margin-top: 10px;
+    }
+  }
+}

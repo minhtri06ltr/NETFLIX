@@ -44,7 +44,9 @@ const Topbar = () => {
           <div className="profile">
             <ArrowDropDown className="topbar-icon" />
             <div className="options">
-              <span>Profile</span>
+              <Link to="/profile" className="link">
+                <span>Profile</span>
+              </Link>
               <span onClick={() => dispatch(logout())}>Logout</span>
             </div>
           </div>

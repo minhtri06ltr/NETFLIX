@@ -70,6 +70,7 @@ const authReducer = (state = initState, action) => {
     case authConstants.GET_TOKEN:
       state = {
         ...state,
+        auth:true,
         token: action.payload,
       };
       break;

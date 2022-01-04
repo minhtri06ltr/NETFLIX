@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { getToken, getUser } from "./actions/auth";
 import ForgotPassword from "./pages/forgotpassword/ForgotPassword";
 import ResetPassword from "./pages/resetpassword/ResetPassword";
+import Profile from "./pages/profile/Profile";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
@@ -50,7 +51,8 @@ const App = () => {
           <Route path="/movies" element={<Home type="movie" />} />
           <Route path="/series" element={<Home type="series" />} />
           <Route path="/watch" element={<Watch />} />
-          <Route path="/login" element={<Login />} />
+
+          <Route path="/profile" element={<Profile />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
