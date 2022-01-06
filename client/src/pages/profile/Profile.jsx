@@ -1,9 +1,16 @@
 import "./profile.scss";
 import Topbar from "../../components/topbar/Topbar";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 import { CameraAlt } from "@mui/icons-material";
 const Profile = () => {
   const auth = useSelector((state) => state.auth);
+  const [profileForm, setProfileForm] = useState({
+    email: auth.info.email,
+    password: "",
+    cfPassowrd: "",
+    username: auth.info.username,
+  });
   return (
     <div className="profilePage">
       <Topbar />
@@ -12,21 +19,33 @@ const Profile = () => {
         <div className="line"></div>
         <div className="center">
           <div className="centerLeft">
-            <img src={auth.info.profileImg} alt="" className="avatar" />
-            <label htmlFor="icon-button-file">
-            <input type="file" accept="image/*" id="icon-button-file" style={{ display: "none" }} />
-            <CameraAlt className="uploadIcon" />
-            </label>
+            <div className="avatar">
+              <img src={auth.info.profileImg} alt="" />
+              <label htmlFor="icon-button-file">
+              <input
+                  type="file"
+                  accept="image/*"
+                  id="icon-button-file"
+                  style={{ display: "none" }}
+                />
+                <CameraAlt className="uploadIcon" />
+                
+              </label>
+            </div>
           </div>
           <div className="centerRight">
             <form>
               <div className="field">
                 <label htmlFor="">Email</label>
-                <input type="email" name="email" />
+                <input type="email" value={profileForm.email} name="email" />
               </div>
               <div className="field">
                 <label htmlFor="">Username</label>
-                <input type="text" name="username" />
+                <input
+                  type="text"
+                  value={profileForm.username}
+                  name="username"
+                />
               </div>
               <div className="field">
                 <label htmlFor="">Password</label>
