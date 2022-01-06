@@ -2,16 +2,18 @@ const User = require("../models/user");
 const cloudinary = require("cloudinary");
 const fs = require("fs");
 //UPDATE
-exports.adminUpdateUser = async (req, res) => {
+
+exports.userUpdateProfile = async (req, res) => {
   if (req.body.password) {
     req.body.password = CryptoJS.AES.encrypt(
       req.body.password,
       process.env.SECRET_KEY
     ).toString();
   }
+
   try {
-    await User.findByIdAndUpdate(
-      req.params.id,
+    const updatedProfile = await User.findByIdAndUpdate(
+      req.user.id,
       {
         $set: req.body, //set new data when = all req.boy
       },
@@ -19,7 +21,8 @@ exports.adminUpdateUser = async (req, res) => {
     );
     return res.status(200).json({
       success: true,
-      message: "Update user successfull",
+      message: "Update info successfull",
+      updatedProfile,
     });
   } catch (err) {
     console.log(err);
@@ -129,10 +132,8 @@ exports.getUserPerMonth = async (req, res) => {
 };
 //USER UPLOAD AVATAR
 const removeTmp = (path) => {
-  console.log(path);
   fs.unlink(path, (err) => {
     if (err) throw err;
-    console.log("Delete successfull");
   });
 };
 cloudinary.config({
@@ -156,7 +157,8 @@ exports.uploadAvatar = async (req, res) => {
         removeTmp(file.tempFilePath);
         res.status(200).json({
           success: true,
-          message: "Upload your avatar successfull",
+          message:
+            "Image is ready to update, please press Update button to update your profile image",
           url: result.secure_url,
         });
       }

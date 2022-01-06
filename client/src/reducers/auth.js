@@ -1,4 +1,4 @@
-import { authConstants } from "../actions/constants";
+import { authConstants, userConstants } from "../actions/constants";
 const initState = {
   auth: false,
   loading: false,
@@ -141,9 +141,18 @@ const authReducer = (state = initState, action) => {
         loading: false,
       };
       break;
-
+    //LOG OUT
     case authConstants.LOGOUT_SUCCESS:
       state = initState;
+
+      break;
+    //UPDATE PROFILE
+    case userConstants.USER_UPDATE_PROFILE_SUCCESS:
+      console.log("2");
+      state = {
+        ...state,
+        info: action.payload,
+      };
 
       break;
     default:

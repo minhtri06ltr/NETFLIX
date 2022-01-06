@@ -12,6 +12,7 @@ export const setAuthToken = (token) => {
     axios.defaults.headers.common["token"] = `Bearer ${token}`;
   } else {
     //delete
+
     delete axios.defaults.headers.common["token"];
   }
 };

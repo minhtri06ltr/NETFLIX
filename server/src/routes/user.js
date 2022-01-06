@@ -2,6 +2,7 @@ const {
   adminUpdateUser,
   deleteUser,
   getUser,
+  userUpdateProfile,
   getAllUser,
   getUserPerMonth,
   uploadAvatar,
@@ -10,7 +11,8 @@ const { verifyToken, verifyTokenAndAdmin } = require("../middlewares/auth");
 const router = require("express").Router();
 
 //UPDATE
-router.patch("/update/:id", verifyToken, verifyTokenAndAdmin, adminUpdateUser);
+
+router.patch("/update", verifyToken, userUpdateProfile);
 //DELETE
 router.delete("/delete/:id", verifyToken, verifyTokenAndAdmin, deleteUser);
 //GET

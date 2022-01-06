@@ -22,7 +22,6 @@ const App = () => {
     const lsAuth = localStorage.getItem("auth");
     if (lsAuth) {
       dispatch(getToken());
-      console.log("get token");
     }
   }, [auth.auth, dispatch]);
   useEffect(() => {
