@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../actions/auth";
 import "./login.scss";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -9,6 +9,7 @@ import Toast from "../../components/modals/toast/Toast";
 import { Facebook, GitHub, Google } from "@mui/icons-material";
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
   const [verifyCaptcha, setVerifyCaptcha] = useState(false);
@@ -35,14 +36,12 @@ const Login = () => {
         message: "Missing email or password",
       });
       setOpen(true);
-      //   setTimeout(() => setAlert(null), 1000);
     } else if (!verifyCaptcha) {
       setAlert({
         type: "warning",
         message: "Missing captcha",
       });
       setOpen(true);
-      //   setTimeout(() => setAlert(null), 1000);
     } else {
       const response = await dispatch(login(loginForm));
 
@@ -52,7 +51,8 @@ const Login = () => {
           message: response.message,
         });
         setOpen(true);
-        // setTimeout(() => setAlert(null), 1000);
+      } else {
+        navigate("/");
       }
     }
   };

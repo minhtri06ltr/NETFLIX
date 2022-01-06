@@ -63,73 +63,78 @@ export const getToken = () => {
     try {
       const response = await axios.post("/auth/refreshToken");
       dispatch({
-        type: authConstants.GET_TOKEN,
+        type: authConstants.GET_TOKEN_SUCCESS,
         payload: response.data.accessToken,
       });
       await setAuthToken(response.data.accessToken);
       return response.data;
     } catch (error) {
-      return error.response.data;
+      localStorage.removeItem("auth");
+      window.location.href = "/";
     }
   };
 };
 export const getUser = (token) => {
   return async (dispatch) => {
+    dispatch({
+      type: authConstants.GET_USER_REQUEST,
+    });
     try {
       const response = await axios.get("/users/info");
       dispatch({
-        type: authConstants.GET_USER,
+        type: authConstants.GET_USER_SUCCESS,
         payload: response.data.user,
       });
       return response.data;
     } catch (error) {
-      console.log(error);
+      localStorage.removeItem("auth");
+      window.location.href = "/";
     }
   };
 };
 
-export const resetPassowrd = (resetPassword,resetToken) => {
-   
+export const resetPassowrd = (resetPassword, resetToken) => {
   return async (dispatch) => {
     dispatch({
-        type: authConstants.RESET_PASSWORD_REQUEST
-    })
+      type: authConstants.RESET_PASSWORD_REQUEST,
+    });
     try {
-       
-      const response = await axios.post("/auth/reset",{resetPassword},{
-        headers: {token:`Bearer ${resetToken}`}
-      });
+      const response = await axios.post(
+        "/auth/reset",
+        { resetPassword },
+        {
+          headers: { token: `Bearer ${resetToken}` },
+        }
+      );
       dispatch({
-        type: authConstants.RESET_PASSWORD_SUCCESS
-    })
+        type: authConstants.RESET_PASSWORD_SUCCESS,
+      });
       return response.data;
     } catch (error) {
-        dispatch({
-            type: authConstants.RESET_PASSWORD_FAILURE
-        })
-   
+      dispatch({
+        type: authConstants.RESET_PASSWORD_FAILURE,
+      });
+
       return error.response.data;
     }
-    
   };
 };
 export const forgotPassword = (email) => {
   return async (dispatch) => {
     dispatch({
-        type: authConstants.FORGOT_PASSWORD_REQUEST
-    })
+      type: authConstants.FORGOT_PASSWORD_REQUEST,
+    });
     try {
-       
       const response = await axios.post("/auth/forgot", { email });
       dispatch({
-        type: authConstants.FORGOT_PASSWORD_SUCCESS
-    })
+        type: authConstants.FORGOT_PASSWORD_SUCCESS,
+      });
       return response.data;
     } catch (error) {
-        dispatch({
-            type: authConstants.FORGOT_PASSWORD_FAILURE
-        })
-     
+      dispatch({
+        type: authConstants.FORGOT_PASSWORD_FAILURE,
+      });
+
       return error.response.data;
     }
   };
@@ -139,9 +144,12 @@ export const logout = () => {
     try {
       await axios.get("/auth/logout");
       localStorage.removeItem("auth");
-      window.location.href = "/";
+      setAuthToken(null);
+      dispatch({
+        type: authConstants.LOGOUT_SUCCESS,
+      });
     } catch (error) {
-      window.location.href = "/";
+      console.log(error);
     }
   };
 };

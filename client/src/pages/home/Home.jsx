@@ -11,10 +11,17 @@ const Home = ({ type }) => {
   const [genre, setGenre] = useState(null);
   //get list
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     const getRandomList = async () => {
       try {
         const res = await axios.get(
-          `lists${type ? "?type=" + type : ""}${genre ? "&genre=" + genre : ""}`
+          `lists${type ? "?type=" + type : ""}${
+            genre ? "&genre=" + genre : ""
+          }`,
+          {
+            signal: signal,
+          }
         );
         if (res.data.success) {
           setLists(res.data.list);
@@ -24,6 +31,7 @@ const Home = ({ type }) => {
       }
     };
     getRandomList();
+    return () => controller.abort();
   }, [type, genre]); //when we change type or genra useEffect will trigger
 
   return (

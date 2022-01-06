@@ -5,11 +5,12 @@ import { useState } from "react";
 import { CameraAlt } from "@mui/icons-material";
 const Profile = () => {
   const auth = useSelector((state) => state.auth);
+  console.log(auth);
   const [profileForm, setProfileForm] = useState({
-    email: auth.info.email,
+    email: "",
     password: "",
     cfPassowrd: "",
-    username: auth.info.username,
+    username: "",
   });
   return (
     <div className="profilePage">
@@ -22,14 +23,13 @@ const Profile = () => {
             <div className="avatar">
               <img src={auth.info.profileImg} alt="" />
               <label htmlFor="icon-button-file">
-              <input
+                <input
                   type="file"
                   accept="image/*"
                   id="icon-button-file"
                   style={{ display: "none" }}
                 />
                 <CameraAlt className="uploadIcon" />
-                
               </label>
             </div>
           </div>
@@ -37,13 +37,17 @@ const Profile = () => {
             <form>
               <div className="field">
                 <label htmlFor="">Email</label>
-                <input type="email" value={profileForm.email} name="email" />
+                <input
+                  type="email"
+                  defaultValue={auth.info.email}
+                  name="email"
+                />
               </div>
               <div className="field">
                 <label htmlFor="">Username</label>
                 <input
                   type="text"
-                  value={profileForm.username}
+                  defaultValue={auth.info.username}
                   name="username"
                 />
               </div>

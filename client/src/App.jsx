@@ -22,6 +22,7 @@ const App = () => {
     const lsAuth = localStorage.getItem("auth");
     if (lsAuth) {
       dispatch(getToken());
+      console.log("get token");
     }
   }, [auth.auth, dispatch]);
   useEffect(() => {
@@ -33,16 +34,6 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route
-          path="/register"
-          element={auth.auth ? <Navigate to="/" /> : <Register />}
-        />
-        <Route
-          path="/login"
-          element={auth.auth ? <Navigate to="/" /> : <Login />}
-        />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/user/reset/:resetToken" element={<ResetPassword />} />
-        <Route
           path="/users/activate/:activationToken"
           element={<ActivateEmail />}
         />
@@ -51,10 +42,24 @@ const App = () => {
           <Route path="/movies" element={<Home type="movie" />} />
           <Route path="/series" element={<Home type="series" />} />
           <Route path="/watch" element={<Watch />} />
-
           <Route path="/profile" element={<Profile />} />
         </Route>
-
+        <Route
+          path="/register"
+          element={!auth.auth ? <Register /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/login"
+          element={!auth.auth ? <Login /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/forgot-password"
+          element={!auth.auth ? <ForgotPassword /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/user/reset/:resetToken"
+          element={!auth.auth ? <ResetPassword /> : <Navigate to="/" />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

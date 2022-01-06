@@ -3,7 +3,7 @@ const initState = {
   auth: false,
   loading: false,
   error: false,
-
+  token: "",
   info: {},
 };
 
@@ -20,7 +20,7 @@ const authReducer = (state = initState, action) => {
     case authConstants.LOGIN_SUCCESS:
       state = {
         ...state,
-        loading: false,
+
         auth: true,
       };
       break;
@@ -67,62 +67,80 @@ const authReducer = (state = initState, action) => {
       break;
 
     //GET TOKEN
-    case authConstants.GET_TOKEN:
+    case authConstants.GET_TOKEN_REQUEST:
       state = {
         ...state,
-        auth:true,
+        loading: true,
+        auth: true,
+      };
+      break;
+    case authConstants.GET_TOKEN_SUCCESS:
+      state = {
+        ...state,
+        auth: true,
+        loading: true,
+
         token: action.payload,
       };
       break;
 
     //GET USER
-    case authConstants.GET_USER:
+    case authConstants.GET_USER_REQUEST:
+      state = {
+        ...state,
+
+        auth: true,
+        loading: true,
+      };
+      break;
+    case authConstants.GET_USER_SUCCESS:
       state = {
         ...state,
         info: action.payload,
+        auth: true,
+        loading: false,
       };
       break;
 
-       //FORGOT PASSWORD
+    //FORGOT PASSWORD
     case authConstants.FORGOT_PASSWORD_REQUEST:
-        state = {
-          ...state,
-          loading: true,
-        };
-        break;
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
     case authConstants.FORGOT_PASSWORD_SUCCESS:
-            state = {
-              ...state,
-              loading: false,
-            };
-            break;
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
     case authConstants.FORGOT_PASSWORD_FAILURE:
-                state = {
-                  ...state,
-                  loading: false,
-                };
-                break;
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
 
-
-                //RESET PASSWORD
+    //RESET PASSWORD
     case authConstants.RESET_PASSWORD_REQUEST:
-        state = {
-          ...state,
-          loading: true,
-        };
-        break;
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
     case authConstants.RESET_PASSWORD_SUCCESS:
-            state = {
-              ...state,
-              loading: false,
-            };
-            break;
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
     case authConstants.RESET_PASSWORD_FAILURE:
-                state = {
-                  ...state,
-                  loading: false,
-                };
-                break;
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
 
     case authConstants.LOGOUT_SUCCESS:
       state = initState;

@@ -6,15 +6,22 @@ import axios from "axios";
 const Featured = ({ type, setGenre }) => {
   const [content, setContent] = useState({});
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     const getRandomContent = async () => {
       try {
-        const res = await axios.get(`/movies/random?type=${type}`);
+        const res = await axios.get(`/movies/random?type=${type}`, {
+          signal: signal,
+        });
         if (res.data.success) {
           setContent(res.data.movie[0]);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
     getRandomContent();
+    return () => controller.abort();
   }, [type]);
 
   return (
