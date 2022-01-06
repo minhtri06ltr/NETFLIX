@@ -23,7 +23,7 @@
       width: 45%;
       margin: 15px;
       height: 1px;
-      background-color: #484444;
+      background-color: #c1c3c5;
     }
     .center {
       display: flex;
@@ -42,23 +42,57 @@
               height: 20px;
               width: 250px;
               padding: 10px;
+              background-color: #c1c3c5;
+              border-radius: 5px;
             }
           }
         }
       }
       .centerLeft {
-        position: relative;
-        img {
+        .avatar {
           height: 150px;
           width: 150px;
           margin-top: 30px;
-        }
-        .uploadIcon {
-          position: absolute;
-          top: 43%;
-          left: 0;
-          color: white;
-          cursor:pointer;
+          overflow: hidden;
+          position: relative;
+
+          border: 1px solid #ddd;
+
+          cursor: pointer;
+          img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+          }
+          label {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            cursor: pointer;
+            height: 50%;
+            background: linear-gradient(
+              to bottom,
+              transparent 0%,
+              rgb(0, 0, 0, 0.8) 30%
+            );
+
+            transition: 0.3s ease-in-out;
+            .uploadIcon {
+              width: 100%;
+              margin-top: 17%;
+              color: white;
+            }
+            .input {
+              width: 100%;
+            }
+          }
+          &:hover {
+            label {
+              bottom: -15%;
+            }
+          }
         }
       }
     }
