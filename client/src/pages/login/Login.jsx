@@ -178,9 +178,19 @@ const Login = () => {
               onFailure={responseGoogle}
               cookiePolicy={"single_host_origin"}
             />
-            <div className="github">
-              <GitHub sx={{ fontSize: 40 }} />
-            </div>
+
+            <a
+              className="link"
+              href="../html-link.htm"
+              target="popup"
+              onClick={() =>
+                window.open("../html-link.htm", "name", "width=800,height=800")
+              }
+            >
+              <div className="github">
+                <GitHub sx={{ fontSize: 40 }} />
+              </div>
+            </a>
           </div>
         </form>
       </div>
