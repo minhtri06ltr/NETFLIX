@@ -1,13 +1,14 @@
 const User = require("../models/user");
 const cloudinary = require("cloudinary");
 const fs = require("fs");
+const CryptoJS = require("crypto-js");
 //UPDATE
 
 exports.userUpdateProfile = async (req, res) => {
   if (req.body.password) {
     req.body.password = CryptoJS.AES.encrypt(
       req.body.password,
-      process.env.SECRET_KEY
+      process.env.HASH_KEY
     ).toString();
   }
 

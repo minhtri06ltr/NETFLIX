@@ -3,7 +3,9 @@ const {
   login,
   activateEmail,
   getAccessToken,
+  googleLogin,
   forgotPassword,
+  facebookLogin,
   logout,
   resetPassword,
 } = require("../controllers/auth");
@@ -15,7 +17,7 @@ const {
 const router = require("express").Router();
 
 //register
-router.post("/register", emailValidate, usernameValidate, register);
+router.post("/register", emailValidate, register);
 //login
 router.post("/login", login);
 //activate
@@ -25,4 +27,7 @@ router.post("/refreshToken", getAccessToken);
 router.post("/forgot", forgotPassword);
 router.post("/reset", verifyToken, resetPassword);
 router.get("/logout", logout);
+//social login
+router.post("/google_login", googleLogin);
+router.post("/facebook_login", facebookLogin);
 module.exports = router;

@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../actions/auth";
+import { facebookLogin, googleLogin, login } from "../../actions/auth";
 import "./login.scss";
 import CircularProgress from "@mui/material/CircularProgress";
 import ReCAPTCHA from "react-google-recaptcha";
 import Toast from "../../components/modals/toast/Toast";
 import { Facebook, GitHub, Google } from "@mui/icons-material";
+import { GoogleLogin } from "react-google-login";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -59,7 +62,34 @@ const Login = () => {
   const handleCaptcha = (value) => {
     setVerifyCaptcha(true);
   };
-
+  const responseGoogle = async (response) => {
+    setOpen(false);
+    const res = await dispatch(googleLogin(response.tokenId));
+    if (!res.success) {
+      setAlert({
+        type: "error",
+        message: res.message,
+      });
+      setOpen(true);
+    } else {
+      navigate("/");
+    }
+  };
+  const responseFacebook = async (response) => {
+    setOpen(false);
+    const res = await dispatch(
+      facebookLogin(response.userID, response.accessToken)
+    );
+    if (!res.success) {
+      setAlert({
+        type: "error",
+        message: res.message,
+      });
+      setOpen(true);
+    } else {
+      navigate("/");
+    }
+  };
   return (
     <div className="login">
       {open && <Toast info={alert} open={open} setOpen={setOpen} />}
@@ -117,12 +147,37 @@ const Login = () => {
             <b>Forgot your password?</b>
           </Link>
           <div className="iconList">
-            <div className="facebook">
-              <Facebook />
-            </div>
-            <div className="google">
-              <Google className="googleLogoColor" />
-            </div>
+            <FacebookLogin
+              appId="1057376915012807"
+              fields="name,email,picture"
+              autoLoad={false}
+              callback={responseFacebook}
+              render={(renderProps) => (
+                <div
+                  className="facebook"
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                >
+                  <Facebook />
+                </div>
+              )}
+            />
+
+            <GoogleLogin
+              clientId="1084168512136-ldd3bu07ir8hgal7rov98dgtthifdoeq.apps.googleusercontent.com"
+              render={(renderProps) => (
+                <div
+                  className="google"
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                >
+                  <Google className="googleLogoColor" />
+                </div>
+              )}
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={"single_host_origin"}
+            />
             <div className="github">
               <GitHub sx={{ fontSize: 40 }} />
             </div>

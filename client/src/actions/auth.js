@@ -153,3 +153,46 @@ export const logout = () => {
     }
   };
 };
+export const googleLogin = (tokenId) => {
+  return async (dispatch) => {
+    dispatch({
+      type: authConstants.LOGIN_REQUEST,
+    });
+    try {
+      const response = await axios.post("/auth/google_login", { tokenId });
+      localStorage.setItem("auth", true);
+      dispatch({
+        type: authConstants.LOGIN_SUCCESS,
+      });
+      return response.data;
+    } catch (error) {
+      dispatch({
+        type: authConstants.LOGIN_FAILURE,
+      });
+      return error.response.data;
+    }
+  };
+};
+export const facebookLogin = (userId, accessToken) => {
+  return async (dispatch) => {
+    dispatch({
+      type: authConstants.LOGIN_REQUEST,
+    });
+    try {
+      const response = await axios.post("/auth/facebook_login", {
+        userId,
+        accessToken,
+      });
+      localStorage.setItem("auth", true);
+      dispatch({
+        type: authConstants.LOGIN_SUCCESS,
+      });
+      return response.data;
+    } catch (error) {
+      dispatch({
+        type: authConstants.LOGIN_FAILURE,
+      });
+      return error.response.data;
+    }
+  };
+};

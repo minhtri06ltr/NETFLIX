@@ -84,7 +84,7 @@ const Profile = () => {
       (profileForm.password !== profileForm.cfPassword &&
         profileForm.password !== "") ||
       (profileForm.password !== profileForm.cfPassword &&
-        profileForm.cfPassowrd !== "")
+        profileForm.cfPassword.length !== 0)
     ) {
       setAlert({
         type: "warning",
@@ -115,7 +115,7 @@ const Profile = () => {
   };
   const handleUpdate = () => {
     setOpen(false);
-    if (profileForm.password) updatePassword();
+    if (profileForm.password || profileForm.cfPassword) updatePassword();
     if (preview || profileForm.username) updateInfo();
   };
   return (

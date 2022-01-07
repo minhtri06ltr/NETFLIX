@@ -4,7 +4,7 @@ const User = require("../models/user");
 
 exports.verifyToken = async (req, res, next) => {
   const authHeader = req.headers.token;
-  
+
   if (authHeader) {
     const token = authHeader.split(" ")[1];
 
@@ -65,18 +65,4 @@ exports.emailValidate = async (req, res, next) => {
       });
     }
   }
-};
-
-exports.usernameValidate = async (req, res, next) => {
-  const usernameDB = await User.findOne({
-    username: req.body.username,
-  });
-  if (usernameDB)
-    return res.status(400).json({
-      success: false,
-      message: "User name already taken",
-      validate: false,
-    });
-
-  next();
 };

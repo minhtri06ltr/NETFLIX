@@ -2,6 +2,10 @@ const User = require("../models/user");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 const { sendMail } = require("../middlewares/mail");
+const { google } = require("googleapis");
+const fetch = require("node-fetch");
+const { OAuth2 } = google.auth;
+const client = new OAuth2(process.env.GOOGLE_LOGIN_CLIENT_ID);
 
 const createActivationToken = (payload) => {
   return jwt.sign(payload, process.env.ACTIVATION_TOKEN_KEY, {
@@ -183,6 +187,131 @@ exports.logout = async (req, res) => {
       message: "Logout successfull",
     });
   } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      err: err.message,
+    });
+  }
+};
+exports.googleLogin = async (req, res) => {
+  try {
+    const verify = await client.verifyIdToken({
+      idToken: req.body.tokenId,
+      audience: process.env.GOOGLE_LOGIN_CLIENT_ID,
+    });
+
+    const { email_verified, email, name, picture } = verify.payload;
+    const password = email + process.env.GOOGLE_LOGIN_HASH_KEY;
+
+    if (email_verified) {
+      const user = await User.findOne({ email });
+      if (user) {
+        const refreshToken = createRefreshToken({ id: user._id });
+
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          path: "/api/auth/refreshToken",
+          maxAge: 7 * 24 * 60 * 60 * 1000, //7d,
+          sameSite: "None",
+          secure: true,
+        });
+        res.status(200).json({
+          success: true,
+          message: "Login successfull",
+        });
+      } else {
+        const newUser = new User({
+          email: email,
+          username: name,
+          password: CryptoJS.AES.encrypt(
+            password,
+            process.env.HASH_KEY
+          ).toString(),
+          profileImg: picture,
+        });
+        await newUser.save();
+        const refreshToken = createRefreshToken({ id: newUser._id });
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          path: "/api/auth/refreshToken",
+          maxAge: 7 * 24 * 60 * 60 * 1000, //7d,
+          sameSite: "None",
+          secure: true,
+        });
+
+        return res
+          .status(200)
+          .json({ success: true, message: "Login success!" });
+      }
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "Please verify your email with google first!",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      err: err.message,
+    });
+  }
+};
+
+exports.facebookLogin = async (req, res) => {
+  console.log(req.body);
+  try {
+    const URL = `https://graph.facebook.com/v4.0/${req.body.userId}/?fields=id,name,email,picture&access_token=${req.body.accessToken}`;
+    const data = await fetch(URL)
+      .then((res) => res.json())
+      .then((res) => {
+        return res;
+      });
+
+    const { email, name, picture } = data;
+    const password = email + process.env.GOOGLE_LOGIN_SECRET_KEY;
+
+    const user = await User.findOne({ email });
+    if (user) {
+      const refreshToken = createRefreshToken({ id: user._id });
+
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        path: "/api/auth/refreshToken",
+        maxAge: 7 * 24 * 60 * 60 * 1000, //7d,
+        sameSite: "None",
+        secure: true,
+      });
+      res.status(200).json({
+        success: true,
+        message: "Login successfull",
+      });
+    } else {
+      const newUser = new User({
+        email: email,
+        username: name,
+        password: CryptoJS.AES.encrypt(
+          password,
+          process.env.HASH_KEY
+        ).toString(),
+        profileImg: picture.data.url,
+      });
+      await newUser.save();
+      const refreshToken = createRefreshToken({ id: newUser._id });
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        path: "/api/auth/refreshToken",
+        maxAge: 7 * 24 * 60 * 60 * 1000, //7d,
+        sameSite: "None",
+        secure: true,
+      });
+
+      return res.status(200).json({ success: true, message: "Login success!" });
+    }
+  } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
