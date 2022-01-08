@@ -5,6 +5,7 @@ const {
   getAccessToken,
   googleLogin,
   forgotPassword,
+  githubLogin,
   facebookLogin,
   logout,
   resetPassword,
@@ -30,4 +31,5 @@ router.get("/logout", logout);
 //social login
 router.post("/google_login", googleLogin);
 router.post("/facebook_login", facebookLogin);
+router.post("/github_login", githubLogin);
 module.exports = router;

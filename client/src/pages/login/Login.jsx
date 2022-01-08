@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { facebookLogin, googleLogin, login } from "../../actions/auth";
+import {
+  facebookLogin,
+  getGithubToken,
+  githubLogin,
+  googleLogin,
+  login,
+} from "../../actions/auth";
 import "./login.scss";
 import CircularProgress from "@mui/material/CircularProgress";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -9,6 +15,7 @@ import Toast from "../../components/modals/toast/Toast";
 import { Facebook, GitHub, Google } from "@mui/icons-material";
 import { GoogleLogin } from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import GitHubLogin from "react-github-login";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -32,7 +39,7 @@ const Login = () => {
 
   const userLogin = async (e) => {
     e.preventDefault();
-
+    setOpen(false);
     if (loginForm.email === "" || loginForm.password === "") {
       setAlert({
         type: "warning",
@@ -90,6 +97,20 @@ const Login = () => {
       navigate("/");
     }
   };
+  const responseGithub = async (response) => {
+    setOpen(false);
+
+    const res = await dispatch(githubLogin(response.code));
+    if (!res.success) {
+      setAlert({
+        type: "error",
+        message: res.message,
+      });
+      setOpen(true);
+    } else {
+      console.log("true");
+    }
+  };
   return (
     <div className="login">
       {open && <Toast info={alert} open={open} setOpen={setOpen} />}
@@ -134,7 +155,7 @@ const Login = () => {
             )}
           </button>
           <span>
-            New to Netflix?{" "}
+            New to Netflix?
             <Link to="/register" className="link">
               <b>Sign up now</b>
             </Link>
@@ -150,7 +171,6 @@ const Login = () => {
             <FacebookLogin
               appId="1057376915012807"
               fields="name,email,picture"
-              autoLoad={false}
               callback={responseFacebook}
               render={(renderProps) => (
                 <div
@@ -178,19 +198,16 @@ const Login = () => {
               onFailure={responseGoogle}
               cookiePolicy={"single_host_origin"}
             />
-
-            <a
-              className="link"
-              href="../html-link.htm"
-              target="popup"
-              onClick={() =>
-                window.open("../html-link.htm", "name", "width=800,height=800")
-              }
+            <GitHubLogin
+              clientId="97b37a75f5dd8e310837"
+              onSuccess={responseGithub}
+              onFailure={responseGithub}
+              redirectUri=""
+              scope="user"
+              className="github"
             >
-              <div className="github">
-                <GitHub sx={{ fontSize: 40 }} />
-              </div>
-            </a>
+              <GitHub sx={{ fontSize: 40 }} />
+            </GitHubLogin>
           </div>
         </form>
       </div>

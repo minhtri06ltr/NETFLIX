@@ -196,3 +196,26 @@ export const facebookLogin = (userId, accessToken) => {
     }
   };
 };
+
+export const githubLogin = (code) => {
+  return async (dispatch) => {
+    dispatch({
+      type: authConstants.LOGIN_REQUEST,
+    });
+    try {
+      const response = await axios.post("/auth/github_login", {
+        code,
+      });
+      localStorage.setItem("auth", true);
+      dispatch({
+        type: authConstants.LOGIN_SUCCESS,
+      });
+      return response.data;
+    } catch (error) {
+      dispatch({
+        type: authConstants.LOGIN_FAILURE,
+      });
+      return error.response.data;
+    }
+  };
+};
