@@ -20,26 +20,24 @@ const Topbar = () => {
     <div className={isScrolled ? "topbar scrolled" : "topbar"}>
       <div className="container">
         <div className="left">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png"
-            alt=""
-            className=""
-          />
           <Link to="/" className="link">
-            <span>Homepage</span>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png"
+              alt=""
+              className=""
+            />
           </Link>
+
           <Link to="/series" className="link">
             <span>Series</span>
           </Link>
           <Link to="/movies" className="link">
             <span>Movies</span>
           </Link>
-          <span className="">New and Popular</span>
-          <span className="">My List</span>
         </div>
         <div className="right">
           <Search className="topbar-icon" />
-          <span>KID</span>
+
           <Notifications className="topbar-icon" />
           <img src={auth.info.profileImg} alt="" />
           <div className="profile">

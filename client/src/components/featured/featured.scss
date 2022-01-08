@@ -1,3 +1,4 @@
+@import "../../app.scss";
 .featured {
   height: 100vh;
   position: relative;
@@ -15,7 +16,9 @@
     display: flex;
     align-items: center;
     color: white;
-
+    @include mobile {
+      top: 150px;
+    }
     select {
       cursor: pointer;
       background-color: var(--main-color);
@@ -36,6 +39,9 @@
 
     .desc {
       margin: 20px 0px;
+      @include mobile {
+        width: 60vw;
+      }
     }
     .buttons {
       display: flex;

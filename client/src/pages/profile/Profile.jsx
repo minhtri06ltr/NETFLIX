@@ -203,8 +203,8 @@ const Profile = () => {
           </button>
         </div>
         <small className="warning">
-          *If you update your password here, you won't be able to login quickly
-          using Google, Facebook or Github.
+          *If you login with multiple Social App with same email we will set
+          user info base on the first Socail App you login .
         </small>
       </div>
     </div>

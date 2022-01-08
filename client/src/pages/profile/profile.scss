@@ -1,4 +1,6 @@
+@import "../../app.scss";
 .profilePage {
+  overflow: hidden;
   background: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0) 0%,
@@ -8,7 +10,7 @@
   background-size: cover;
   position: relative;
   height: 100vh;
-  width: 100wh;
+  width: 100vw;
   .profileContainer {
     display: flex;
     justify-content: center;
@@ -29,6 +31,9 @@
       display: flex;
       width: 40%;
       justify-content: space-between;
+      @include mobile {
+        width: 84%;
+      }
       .centerRight {
         form {
           color: white;
@@ -44,6 +49,9 @@
               padding: 10px;
               background-color: #c1c3c5;
               border-radius: 5px;
+              @include mobile {
+                width: 156px;
+              }
             }
           }
         }
@@ -59,6 +67,10 @@
           border: 1px solid #ddd;
 
           cursor: pointer;
+          @include mobile {
+            height: 120px;
+            width: 120px;
+          }
           img {
             width: 100%;
             height: 100%;
@@ -112,6 +124,11 @@
     .warning {
       color: red;
       margin-top: 10px;
+      @include mobile {
+        padding: 0px;
+        margin-top: 15px;
+        text-align: center;
+      }
     }
   }
 }
