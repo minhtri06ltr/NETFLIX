@@ -141,7 +141,7 @@ const Login = () => {
           />
           <ReCAPTCHA
             style={{ margin: "0 auto" }}
-            sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+            sitekey="6Lc_zc4dAAAAAJ3mSykxpRgNwDZAfG1WdkHQ5Ssr"
             onChange={handleCaptcha}
           />
           <button className="loginButton">
