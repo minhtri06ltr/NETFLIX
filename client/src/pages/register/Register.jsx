@@ -85,7 +85,7 @@ const Register = () => {
             alt=""
           />
           <Link className="link" to="/login">
-            <button className="loginButton">Sign In</button>
+            <button className="loginButton">Sign in</button>
           </Link>
         </div>
       </div>
@@ -133,7 +133,7 @@ const Register = () => {
                   style={{ color: "white", margin: "5px 0px" }}
                 />
               ) : (
-                "Sign in"
+                "Register"
               )}
             </button>
           </form>
