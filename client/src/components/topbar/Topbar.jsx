@@ -29,10 +29,10 @@ const Topbar = () => {
           </Link>
 
           <Link to="/series" className="link">
-            <span>Series</span>
+            <span>Original</span>
           </Link>
           <Link to="/movies" className="link">
-            <span>Movies</span>
+            <span>Cover</span>
           </Link>
         </div>
         <div className="right">

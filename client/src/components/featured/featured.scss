@@ -29,13 +29,16 @@
     }
   }
   .info {
-    width: 35%;
+    width: 50%;
     position: absolute;
     left: 50px;
     bottom: 100px;
     color: white;
     display: flex;
     flex-direction: column;
+    @include mobile {
+      width: 70%;
+    }
 
     .desc {
       margin: 20px 0px;

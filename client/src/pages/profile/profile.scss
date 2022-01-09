@@ -123,11 +123,11 @@
     }
     .warning {
       color: red;
+      text-align: center;
       margin-top: 10px;
       @include mobile {
         padding: 0px;
         margin-top: 15px;
-        text-align: center;
       }
     }
   }

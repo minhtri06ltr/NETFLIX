@@ -8,7 +8,7 @@ import NotFound from "./pages/notfound/NotFound";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 import { useSelector, useDispatch } from "react-redux";
 import ActivateEmail from "./pages/activateemail/ActivateEmail";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { getToken, getUser } from "./actions/auth";
 import ForgotPassword from "./pages/forgotpassword/ForgotPassword";
 import ResetPassword from "./pages/resetpassword/ResetPassword";
@@ -16,8 +16,20 @@ import Profile from "./pages/profile/Profile";
 
 const App = () => {
   const auth = useSelector((state) => state.auth);
-
+  const intervalRef = useRef();
   const dispatch = useDispatch();
+  const callGetToken = useCallback(() => {
+    const lsAuth = localStorage.getItem("auth");
+    if (lsAuth) {
+      dispatch(getToken());
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    const interval = setInterval(() => callGetToken(), 840000);
+    intervalRef.current = interval;
+    return () => clearInterval(interval);
+  }, [callGetToken]);
   useEffect(() => {
     const lsAuth = localStorage.getItem("auth");
     if (lsAuth) {
