@@ -3,7 +3,7 @@ import axios from "axios";
 const apiUrl =
   process.env.NODE_ENV !== "production"
     ? "https://port-5000-nodejs-scruffy-beard-laptopdienthoaimaytinhbang945671.codeanyapp.com/api"
-    : "https://arcane-ravine-81598.herokuapp.com/api";
+    : "https://holoflix.herokuapp.com/api";
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = apiUrl;
 

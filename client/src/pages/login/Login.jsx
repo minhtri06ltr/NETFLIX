@@ -140,8 +140,9 @@ const Login = () => {
             placeholder="Password"
           />
           <ReCAPTCHA
-            style={{ margin: "0 auto" }}
-            sitekey="6Lc_zc4dAAAAAJ3mSykxpRgNwDZAfG1WdkHQ5Ssr"
+            size="normal"
+            data-theme="dark"
+            sitekey="6LeKiv8dAAAAAOgIKw09Gxah4QiWTgat3o-8n53D"
             onChange={handleCaptcha}
           />
           <button className="loginButton">
