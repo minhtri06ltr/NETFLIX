@@ -184,7 +184,7 @@ const Login = () => {
             />
 
             <GoogleLogin
-              clientId="1084168512136-ldd3bu07ir8hgal7rov98dgtthifdoeq.apps.googleusercontent.com"
+              clientId="1084168512136-38l0dnifvhq7vumve1esuk06d862v24e.apps.googleusercontent.com"
               render={(renderProps) => (
                 <div
                   className="google"
